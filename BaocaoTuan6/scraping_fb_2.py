@@ -147,45 +147,55 @@ def get_all_posts_and_comments(driver, wait, all_id_en_posts, all_content_en_pos
             i += 1
         else:
             all_total_comments_each_post.append('0')
-
+    time.sleep(1)
+    actions = ActionChains(driver)
+    actions.key_down(Keys.HOME)
+    actions.key_up(Keys.HOME)
+    actions.perform()
     # Lay noi dung may cai post
     for x in all_id_posts:
-        time.sleep(1)
-        actions = ActionChains(driver)
-        actions.key_down(Keys.END)
-        actions.key_up(Keys.END)
-        actions.perform()
+        while True:
+            try:
+                time.sleep(1)
+                ele = driver.find_element_by_id(x)
+                actions = ActionChains(driver)
+                actions.move_to_element(ele)
+                actions.click(ele)
+                actions.perform()
 
-        time.sleep(1)
-        ele = driver.find_element_by_id(x)
-        actions = ActionChains(driver)
-        actions.move_to_element(ele)
-        actions.click(ele)
-        actions.perform()
+                time.sleep(1)
+                actions = ActionChains(driver)
+                actions.key_down(Keys.ESCAPE)
+                actions.key_up(Keys.ESCAPE)
+                actions.perform()
 
-        time.sleep(1)
-        content = driver.page_source
-        soup = BeautifulSoup(content, "html.parser")
-        content_post = soup.find(
-            "div", {"class": "_5pbx userContent _3576"})
+                content = driver.page_source
+                soup = BeautifulSoup(content, "html.parser")
+                content_post = soup.find(
+                    "div", {"class": "_5pbx userContent _3576"})
+                # lay noi dung cai post
+                all_content_posts.append(content_post.get_text())
 
-        # lay noi dung cai post
-        all_content_posts.append(content_post.get_text())
+                # Xac dinh ngon ngu cua cai post
+                language_on_each_post.append(detect(content_post.get_text()))
+                break
+            except Exception:
+                pass
+                time.sleep(1)
+                actions = ActionChains(driver)
+                actions.key_down(Keys.END)
+                actions.key_up(Keys.END)
+                actions.perform()
 
-        # Xac dinh ngon ngu cua cai post
-        language_on_each_post.append(detect(content_post.get_text()))
+        # content = driver.page_source
+        # soup = BeautifulSoup(content, "html.parser")
+        # content_post = soup.find(
+        #     "div", {"class": "_5pbx userContent _3576"})
+        # # lay noi dung cai post
+        # all_content_posts.append(content_post.get_text())
 
-        time.sleep(1)
-        actions = ActionChains(driver)
-        actions.key_down(Keys.ESCAPE)
-        actions.key_up(Keys.ESCAPE)
-        actions.perform()
-
-        time.sleep(1)
-        actions = ActionChains(driver)
-        actions.key_down(Keys.END)
-        actions.key_up(Keys.END)
-        actions.perform()
+        # # Xac dinh ngon ngu cua cai post
+        # language_on_each_post.append(detect(content_post.get_text()))
 
     en_posts = []
     all_total_comments_each_en_post = []
@@ -401,7 +411,7 @@ def write_all_posts_and_comments(all_id_en_posts, all_content_en_posts,  total_e
         b = all_id_en_posts_to_csv[x]
         if a == b:
             print(x)
-            
+
     for x in range(len(all_users_replied_en_comment_each_en_posts)):
         if all_users_replied_en_comment_each_en_posts[x]:
             file_name = "id_user_comment_{}.csv".format(x)

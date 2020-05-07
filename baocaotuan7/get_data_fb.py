@@ -1,4 +1,5 @@
-from press_keys import ESC, END, CLICK
+import time
+from press_keys import ESC, END, CLICK, HOME
 from my_soup import get_soup, find_all, find, get_text
 from langdetect import detect
 from my_wait import wait_find_id
@@ -15,10 +16,12 @@ def get_all_posts_and_comments(driver, all_id_en_posts, all_content_en_posts, to
         soup, "a", "class", "_3hg- _42ft")
 
     all_id_posts = get_all_id_posts(all_tag_div_contain_posts)
+
     all_total_comments_each_post = get_total_comment_each_posts(
         soup, all_id_posts, all_tag_a_contain_total_comments_each_post)
 
     all_content_posts = get_all_content_posts(driver, all_id_posts)
+
     language_on_each_post = get_language_on_each_post(all_content_posts)
 
     en_posts = []
@@ -66,6 +69,7 @@ def get_all_comment_in_all_en_posts_selected(driver, all_en_posts_selected, tota
 
             if x["contain_comment"] != "0":
                 END(driver)
+                time.sleep(1)
                 ele = driver.find_element_by_class_name("_4vn1")
                 CLICK(driver, ele)
                 END(driver)
@@ -113,19 +117,24 @@ def get_all_comment_in_all_en_posts_selected(driver, all_en_posts_selected, tota
 
 
 def get_all_content_posts(driver, all_id_posts):
+    HOME(driver)
     all_content_posts = []
     for x in all_id_posts:
-        END(driver)
-        ele = driver.find_element_by_id(x)
-        CLICK(driver, ele)
+        while True:
+            try:
+                ele = driver.find_element_by_id(x)
+                CLICK(driver, ele)
 
-        soup = get_soup(driver)
-        content_post = find(soup, "div", "class", "_5pbx userContent _3576")
+                soup = get_soup(driver)
+                content_post = find(
+                    soup, "div", "class", "_5pbx userContent _3576")
+                all_content_posts.append(get_text(content_post))
 
-        all_content_posts.append(get_text(content_post))
-
-        ESC(driver)
-        END(driver)
+                ESC(driver)
+                break
+            except Exception:
+                pass
+                END(driver)
     return all_content_posts
 
 

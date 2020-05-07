@@ -4,11 +4,20 @@ from selenium.webdriver.common.keys import Keys
 
 import time
 
+
 def ESC(driver):
     time.sleep(1)
     actions = ActionChains(driver)
     actions.key_down(Keys.ESCAPE)
     actions.key_up(Keys.ESCAPE)
+    actions.perform()
+
+
+def HOME(driver):
+    time.sleep(1)
+    actions = ActionChains(driver)
+    actions.key_down(Keys.HOME)
+    actions.key_up(Keys.HOME)
     actions.perform()
 
 
@@ -20,7 +29,7 @@ def END(driver):
     actions.perform()
 
 
-def CLICK(driver,ele):
+def CLICK(driver, ele):
     time.sleep(1)
     actions = ActionChains(driver)
     actions.move_to_element(ele)

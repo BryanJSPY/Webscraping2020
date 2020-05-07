@@ -1,6 +1,7 @@
 import my_driver
 import my_wait
 import press_keys
+import time
 
 
 def enter_username_password_login_fb(driver, username, password):
@@ -24,6 +25,7 @@ def enter_keyword_to_search_on_fb(driver, keyword):
         driver, 10, "/html/body/div[1]/div[2]/div/div[1]/div/div/div/div[1]/div[2]/div/form/div/div/div/div/input[2]")
 
     if search_keyword_bar:
+        time.sleep(2)
         my_driver.find_xpath_send_keys(
             driver, "/html/body/div[1]/div[2]/div/div[1]/div/div/div/div[1]/div[2]/div/form/div/div/div/div/input[2]", keyword)
 

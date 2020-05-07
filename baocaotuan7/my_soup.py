@@ -3,7 +3,7 @@ import time
 
 
 def get_soup(driver):
-    time.sleep(1)
+    time.sleep(2)
     content = driver.page_source
     soup = BeautifulSoup(content, "html.parser")
     return soup
