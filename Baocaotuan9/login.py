@@ -13,6 +13,7 @@ def enter_username_password_login_fb(driver, username, password):
 
 
 def turn_off_popup(driver):
+    time.sleep(3)
     check_popup = my_wait.wait_find_class(driver, 10, "_3ixn")
 
     if check_popup:
@@ -46,5 +47,7 @@ def enter_keyword_to_search_on_fb(driver, keyword):
         driver, 10, "/html/body/div[1]/div[3]/div[1]/div/div[3]/div[1]/div/div/div/span/div/div/div[2]/div/a[4]")
 
     if tag_your_group_and_pages:
+        time.sleep(3)
+        print("oke")
         my_driver.find_xpath_click(
             driver, "/html/body/div[1]/div[3]/div[1]/div/div[3]/div[1]/div/div/div/span/div/div/div[2]/div/a[4]")

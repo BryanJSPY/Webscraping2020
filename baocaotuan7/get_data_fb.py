@@ -61,18 +61,18 @@ def open_all_tag_reply(driver):
 
 def get_all_comment_in_all_en_posts_selected(driver, all_en_posts_selected, total_en_comment_each_en_posts, all_users_replied_en_comment_each_en_posts, all_content_en_comment_each_en_posts):
     for x in all_en_posts_selected:
+        END(driver)
         check_post_appear = wait_find_id(driver, 10, x["id"])
 
         if check_post_appear:
             ele = driver.find_element_by_id(x["id"])
+            print(ele.text)
             CLICK(driver, ele)
 
             if x["contain_comment"] != "0":
                 END(driver)
-                time.sleep(1)
                 ele = driver.find_element_by_class_name("_4vn1")
                 CLICK(driver, ele)
-                END(driver)
 
                 open_all_tag_view(driver)
                 open_all_tag_reply(driver)
